@@ -3,6 +3,59 @@
   <title>define-macro</title>
  </head>
  <body>
-  <h4>define-macro</h4>
+  <h2>Digamma: another attempt at lisp for the 21st century</h2>
+  <p>Ok, so earlier today (22 July 2009) I mentioned on lisp.reddit that I use a custom lisp dialect; here are some more of the details</p>
+  <p>The language itself is called <b>Digamma</b>; basically, it's a dialect of scheme with the following:</p>
+  <ul>
+    <li>Dictionaries: '{'(SRFI-88-KEY S-EXPRESSION)*'}'</li>
+    <li>Vectors: [ vector data] (vectors are quoted)</li>
+    <li>Purely functional operations on collections (strings, vectors, lists, dictionaries):
+       <ul>
+         <li>first (car, but for all collections)</li>
+	 <li>rest (cdr; returns freshly allocated collection with shared structure)</li>
+	 <li>ccons (cons)</li>
+	 <li>nth (*-ref)</li>
+	</ul>
+     </li>
+     <li>Lush/Clojure/Arc-style collection application <code>([1 2 3 4 5] 3)</code> returns 4</li>
+     <li> SRFI-89 improvements: 
+       <ul>
+         <li>After non-keyed parameters, keyed parameters can be used in any order</li>
+         <li>:constrain can be used to run a test (CHR, basically)</li>
+         <li>:type can be used to specify a specific type (integer, number, &amp;c.).</li>
+         <li>:constrain can be used for relationships between arguments: (fn ([x :constrain (~&gt;= x 10)] [y :constrain (~&gt; y x)]) ...)</li>
+         <li>:key can be used to specify the actual key object to use</li>
+	 <li>:opt is used for optional arguments with no default (defaults to '())</li>
+	 <li>:body is used for non-optional n-ary argument consumption</li>
+	 <li>:rest is used for optional n-ary argument consumption</li>
+       </ul>
+     </li>
+     <li>Environment additions: <i>define-in-env</i>, <i>set-in-env</i>, <i>clone-default-env</i>, <i>null-env</i>, basic support for <a href="http://mumble.net/~jar/pubs/secureos/secureos.html">W7</a> out of the box</li>
+     <li>SRFI-34-style error system with the usual guard/dynamic-wind &amp;c</li>
+     <li>Near complete support for CL-style <code>format</code> with Dylan's <code>~m</code></li> 
+     <li>an FFI, similar to <a href="http://square.umin.ac.jp/~hchang/ksm/">KSM</a></li>
+     <li><code>require</code>, which simply scales the site-lib for a specific filename</li>
+     <li><code>import</code>, which is Python/CL/Modula-2-like <code>(import "net/irc")</code> creates <code>net/irc</code></li>
+     <li><code>use</code>, which is <a href="http://snow.iro.umontreal.ca/">Snow-like</a></li>
+     <li><code>from</code> which is similar to python's <code> from mod import X</code></li>
+     <li><code>match</code> which can be used Ocaml/Qi-style</li>
+     <li><code>define-syntax</code> supports <code>syntax-rules</code>, whereas <code>define-macro</code> is your plain-jane, unhygenic macro</li>
+     <li>a set of base libraries to facilitate "exploratory programming": network protocols, encryption, &amp;c.</li>
+     <li>R5RS-support is mostly there; macros recreate much of what's in R5RS, to ease code porting...</li>
+     <li> Numerous SRFI support: 9,19,22,34,35,36,28,48,60,70,88,89, with more to come</li>
+   </ul>
+   <p>What I'd like to add, and will over time:</p>
+   <ul>
+    <li>Sub-typing</li>
+    <li>ADT</li>
+   </ul>
+   <p>Currently, there are <b>three</b> basic implementations:</p>
+   <ul>
+    <li>Vesta: reference implementation, written in C, for getting off the ground (tree walking interpreter)</li>
+    <li>Ceres: VM-based implementation, written in C, for actually getting work done</li>
+    <li>Enyo: self-hosting native compiler.</li>
+   </ul>
+   <p>Vesta is the most complete, but Ceres is pretty close (mostly POSIX interaction is missing); Enyo is on going, but can compile simple portions of itself</p>
+   <p>I'm sure I'll have 1.5k "oh, yeah, I forgot X" moments, so I'll post them as they come...</p> 
  </body>
 </html>
